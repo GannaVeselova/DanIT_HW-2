@@ -13,59 +13,60 @@ import java.util.List;
 import static io.restassured.RestAssured.given;
 
 public class PutPetTest {
-    private static final String Base_Url = "https://petstore.swagger.io/v2/pet/";
-@Test
-    public void varifyPetCanBeCModified(){
-    int petDtoId = 654321;
-    String statusValue = "available";
-    String categorySetName = "Mashka";
-    String name = "Pashka";
-    CategotyDto categotyDto = new CategotyDto();
-    categotyDto.setId(456);
-    categotyDto.setName(categorySetName );
-    List<String> photoUrl = new ArrayList<>(List.of("First", "Second", "Third"));
-    TadsDto creatTadDto = new TadsDto();
-    creatTadDto.setName("someTag");
-    creatTadDto.setId(45);
-    List<TadsDto> tadsDtoList = new ArrayList<>(List.of(creatTadDto));
-    PetDto petDto = new PetDto();
-    petDto.setId(petDtoId);
-    petDto.setName(name);
-    petDto.setCategory(categotyDto);
-    petDto.setName(name);
-    petDto.setPhotoUrls(photoUrl);
-    petDto.setTags(tadsDtoList);
-    petDto.setStatus(statusValue);
+    private static final String BASE_URl = "https://petstore.swagger.io/v2/pet/";
 
-    Response response = given().header("Content-Type","application/json").body(petDto).post(Base_Url);
-    System.out.println(response.asPrettyString());
+    @Test
+    public void varifyPetCanBeCModified() {
+        int petDtoId = 654321;
+        String statusValue = "available";
+        String categorySetName = "Mashka";
+        String name = "Pashka";
+        CategotyDto categotyDto = new CategotyDto();
+        categotyDto.setId(456);
+        categotyDto.setName(categorySetName);
+        List<String> photoUrl = new ArrayList<>(List.of("First", "Second", "Third"));
+        TadsDto creatTadDto = new TadsDto();
+        creatTadDto.setName("someTag");
+        creatTadDto.setId(45);
+        List<TadsDto> tadsDtoList = new ArrayList<>(List.of(creatTadDto));
+        PetDto petDto = new PetDto();
+        petDto.setId(petDtoId);
+        petDto.setName(name);
+        petDto.setCategory(categotyDto);
+        petDto.setName(name);
+        petDto.setPhotoUrls(photoUrl);
+        petDto.setTags(tadsDtoList);
+        petDto.setStatus(statusValue);
 
-    Response previouslyCreatedPetDtoResponse = given().get(Base_Url+petDtoId);
-    PetDto previouslyCreatedPetDto = previouslyCreatedPetDtoResponse.as(PetDto.class);
-    System.out.println(previouslyCreatedPetDto.getStatus());
-    Assert.assertEquals(petDtoId,previouslyCreatedPetDto.getId());
+        Response response = given().header("Content-Type", "application/json").body(petDto).post(BASE_URl);
+        System.out.println(response.asPrettyString());
 
-    String changeName = "Pirat";
-    String changeStatusValue = "sold";
-    String changeCategoryName = "cat";
-    categotyDto.setName(changeCategoryName);
-    petDto.setName(changeName);
-    petDto.setStatus(changeStatusValue);
-    petDto.setCategory(categotyDto);
+        Response previouslyCreatedPetDtoResponse = given().get(BASE_URl + petDtoId);
+        PetDto previouslyCreatedPetDto = previouslyCreatedPetDtoResponse.as(PetDto.class);
+        System.out.println(previouslyCreatedPetDto.getStatus());
+        Assert.assertEquals(petDtoId, previouslyCreatedPetDto.getId());
 
-    Response objectChanges = given().header("Content-Type","application/json").body(petDto).put(Base_Url);
-    System.out.println(objectChanges.asPrettyString());
+        String changeName = "Pirat";
+        String changeStatusValue = "sold";
+        String changeCategoryName = "cat";
+        categotyDto.setName(changeCategoryName);
+        petDto.setName(changeName);
+        petDto.setStatus(changeStatusValue);
+        petDto.setCategory(categotyDto);
 
-    Response changeObjectResponse = given().get(Base_Url+petDtoId);
-    PetDto previouslyChangeObject = previouslyCreatedPetDtoResponse.as(PetDto.class);
-    System.out.println(previouslyChangeObject.getStatus());
-    System.out.println(previouslyChangeObject.getName());
-    System.out.println(previouslyChangeObject.getCategory().getName());
+        Response objectChanges = given().header("Content-Type", "application/json").body(petDto).put(BASE_URl);
+        System.out.println(objectChanges.asPrettyString());
 
-    Assert.assertEquals(petDtoId,previouslyChangeObject.getId());
-    Assert.assertEquals(changeName,previouslyChangeObject.getName());
-    Assert.assertEquals(changeStatusValue,previouslyChangeObject.getStatus());
-    Assert.assertEquals(changeCategoryName,previouslyChangeObject.getCategory().getName());
+        Response changeObjectResponse = given().get(BASE_URl + petDtoId);
+        PetDto previouslyChangeObject = changeObjectResponse.as(PetDto.class);
+        System.out.println(previouslyChangeObject.getStatus());
+        System.out.println(previouslyChangeObject.getName());
+        System.out.println(previouslyChangeObject.getCategory().getName());
+
+        Assert.assertEquals(petDtoId, previouslyChangeObject.getId());
+        Assert.assertEquals(changeName, previouslyChangeObject.getName());
+        Assert.assertEquals(changeStatusValue, previouslyChangeObject.getStatus());
+        Assert.assertEquals(changeCategoryName, previouslyChangeObject.getCategory().getName());
 
     }
 }

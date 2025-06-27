@@ -1,6 +1,6 @@
 package AQAHW_2.Dto.Dto;
 
-public class CheckIdDto {
+public class CheckIdDoesNotExistDto {
     private int code;
     private String type;
     private String message;

@@ -12,7 +12,7 @@ import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 
 public class DeletePetTest {
-    private static final String Base_Url = "https://petstore.swagger.io/v2/pet/";
+    private static final String BASE_URl = "https://petstore.swagger.io/v2/pet/";
 
     @Test
     public void verifyPetCanBeODelete() {
@@ -37,13 +37,13 @@ public class DeletePetTest {
         petDto.setTags(tadsDtoList);
         petDto.setStatus(statusValue);
 
-        Response response = given().header("Content-Type", "application/json").body(petDto).post(Base_Url);
+        Response response = given().header("Content-Type", "application/json").body(petDto).post(BASE_URl);
         System.out.println(response.asPrettyString());
-        Response previouslyCreatedPetDtoResponse = given().get(Base_Url + petDtoId);
+        Response previouslyCreatedPetDtoResponse = given().get(BASE_URl + petDtoId);
         PetDto previouslyCreatedPetDto = previouslyCreatedPetDtoResponse.as(PetDto.class);
         Assert.assertEquals(petDtoId, previouslyCreatedPetDto.getId());
 
-        Response deleteRetResponse = given().delete(Base_Url + petDtoId);
+        Response deleteRetResponse = given().delete(BASE_URl + petDtoId);
         DeleteDto deletePetDto = deleteRetResponse.as(DeleteDto.class);
         System.out.println(deleteRetResponse.asPrettyString());
         Assert.assertEquals("unknown", deletePetDto.getType());
@@ -56,7 +56,7 @@ public class DeletePetTest {
     @Test
     public void noWayToDelete() {
         int petDtoId = 987654;
-        Response response = given().get(Base_Url + petDtoId);
+        Response response = given().get(BASE_URl + petDtoId);
         Assert.assertEquals(404, response.getStatusCode());
 
 
